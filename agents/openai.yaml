@@ -1,0 +1,3 @@
+interface:
+  display_name: "Logic Clarifier"
+  short_description: "Reconstruct arguments, assumptions, and logic gaps"
