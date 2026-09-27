@@ -1,5 +1,7 @@
 # logic-clarifier
 
+**当前架构版本：0.3.0**
+
 一个用于 Codex 的“厘清逻辑” Skill。
 
 它不是普通总结器，而是一个“路由 + 双引擎 + 审计 + 压缩”的逻辑系统：
@@ -238,3 +240,6 @@ source span
 详细见：
 
 `references/source-trace-map.md`
+
+
+版本演进见 `CHANGELOG.md`。
