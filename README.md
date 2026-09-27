@@ -2,9 +2,29 @@
 
 一个用于 Codex 的“厘清逻辑” Skill。
 
-它不是普通总结器，而是把文章、长文、访谈、报告、观点材料重建成：
+它不是普通总结器，而是一个“路由 + 双引擎 + 审计 + 压缩”的逻辑系统：
 
-**母问题 → 核心答案 → 旧模型/新模型 → 论证机制 → 二进制逻辑图 → 隐藏前提 → 适用边界 → 可复用框架**
+```text
+用户请求
+│
+├─ 分析现有材料
+│   ↓
+│  Argument Reconstruction
+│
+├─ 帮用户构建现实论证
+│   ↓
+│  Probabilistic Argument
+│
+└─ 两者都要
+    ↓
+   先重构原文
+    ↓
+   再审计 / 增强
+```
+
+最后再压缩成：
+
+**母问题 → 核心答案 → 旧模型/新模型 → 论证机制 → 真实拓扑逻辑图 → 隐藏前提 → 适用边界 → 可复用框架**
 
 ## 目录
 
@@ -15,7 +35,10 @@ logic-clarifier/
 ├── assets/
 │   └── output-template.md
 ├── references/
-│   └── logic-audit.md
+│   ├── task-router.md
+│   ├── logic-audit.md
+│   ├── probabilistic-argument.md
+│   └── source-trace-map.md
 └── examples/
     ├── article-analysis-example.md
     └── probabilistic-argument-example.md
@@ -152,3 +175,66 @@ Use the logic-clarifier skill to analyze this article.
 ↓
 足够可信的有限结论
 ```
+
+
+## 核心架构
+
+```text
+Task Router
+    ↓
+┌───────────────┬────────────────┐
+│               │                │
+▼               ▼                │
+Argument        Probabilistic    │
+Reconstruction Argument         │
+│               │                │
+└───────────────┴───────┬────────┘
+                        ↓
+                   Logic Audit
+                        ↓
+                 Slow Variables
+                        ↓
+                Reusable Framework
+```
+
+### 为什么这样改？
+
+旧版本把“分析作者论证”和“帮助用户自己论证”塞进同一条长 Workflow，导致概率论证直到后半段才分流。
+
+现在一开始就判断任务类型：
+
+- **Reconstruction**：恢复作者到底是怎么论证的；
+- **Probability**：帮助用户构建现实世界的有限论证；
+- **Mixed**：先冻结作者原逻辑，再进入审计/补强。
+
+## 逻辑图原则
+
+“二进制逻辑图”不再是默认强制形态。
+
+根据真实拓扑选择：
+
+- YES / NO 判断 → 二进制树；
+- 原因 → 机制 → 结果 → 因果链；
+- 多个平级变量 → 并列结构；
+- 多路径回到同一结论 → 分支 + 汇聚；
+- 治理 / 学习 / 风险迭代 → 反馈环。
+
+**表达形式服从真实逻辑，而不是为了好看制造不存在的二元对立。**
+
+## Source Trace Map
+
+处理文章、字幕、PDF、白皮书时，可以内部记录：
+
+```text
+source span
+→ node id
+→ direct / synthesized / inference / gap
+```
+
+用于回答：
+
+> “这个节点到底是作者原文说的，还是我们分析出来的？”
+
+详细见：
+
+`references/source-trace-map.md`
